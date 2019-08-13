@@ -1,0 +1,16 @@
+{
+  "manifest_version": 2,
+  "name": "Trigger Webhook from Notion",
+  "version": "0.0.1",
+  "description": "Add a button that can trigger a POST webhook in Notion.so's table.",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.notion.so/*"
+      ],
+      "js": [
+        "src/extension.js"
+      ]
+    }
+  ]
+}
