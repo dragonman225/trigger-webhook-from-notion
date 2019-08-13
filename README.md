@@ -11,15 +11,15 @@ Below is a demo where I trigger [Netlify](https://www.netlify.com)'s build webho
 This is a **proof-of-concept**, so it requires a few changes in code to adapt to your need. They are simple, and I'll explain as clear as possible.
 
 1. Open `src/extension.js`, replace the dummy `buildHookUrl` with your webhook URL.
-
+   
    Any webhook should work, as long as the webhook can be triggered by an empty `POST` request (for instance, Netlify's).
-
+   
    ```javascript
    const buildHookUrl = 'https://Replace.this.string.with.your.webhook.URL'
    ```
 
 2. (Optional) If you want the trigger button appear only on one table, open `manifest.json`, in `content_scripts.matches`, change `https://www.notion.so/*` to a table's URL.
-
+   
    If you skip this step, the you will see the trigger button **in every table**.
    
    ```javascript
@@ -28,15 +28,15 @@ This is a **proof-of-concept**, so it requires a few changes in code to adapt to
        "matches": [
          "https://www.notion.so/*" // Change this
        ],
-       ...
+       // ...
      }
-]
+   ]
    ```
-   
+
 3. Load this extension into your browser. Since this is an unpacked extension, it needs to be loaded in developer mode or debug mode.
-
+   
    For **Google Chrome** or **Chromium-based**, follow the tutorial : https://developer.chrome.com/extensions/getstarted.
-
+   
    For **Firefox**, follow the tutorial : https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension#Installing.
 
 4. Open a table in Notion to test it out !
