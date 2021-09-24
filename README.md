@@ -1,8 +1,8 @@
 # Trigger Webhook from Notion
 
-Trigger a webhook that requires a POST request directly from [Notion](https://www.notion.so)'s table.
+Trigger a webhook that activates on a POST request directly from a [Notion table](https://www.notion.so/b6fcf809ca5047b89f423948dce013a0?v=03ddc4d6130a47f8b68e74c9d0061de2).
 
-Below is a demo where I trigger [Netlify](https://www.netlify.com)'s build webhook of my blog built with [notablog](https://github.com/dragonman225/notablog) framework.
+Below is a demo where I can just click a button on a Notion table and trigger [Netlify](https://www.netlify.com)'s build webhook to update my blog built with [Notablog](https://github.com/dragonman225/notablog).
 
 ![demo-gif](assets/demo.gif)
 
@@ -11,16 +11,16 @@ Below is a demo where I trigger [Netlify](https://www.netlify.com)'s build webho
 This is a **proof-of-concept**, so it requires a few changes in code to adapt to your need. They are simple, and I'll explain as clear as possible.
 
 1. Open `src/extension.js`, replace the dummy `buildHookUrl` with your webhook URL.
-   
-   Any webhook should work, as long as the webhook can be triggered by an empty `POST` request (for instance, Netlify's).
+  
+   Any webhook should work, as long as the webhook can be triggered by an empty `POST` request (for example, Netlify's).
    
    ```javascript
    const buildHookUrl = 'https://Replace.this.string.with.your.webhook.URL'
    ```
 
 2. (Optional) If you want the trigger button appear only on one table, open `manifest.json`, in `content_scripts.matches`, change `https://www.notion.so/*` to a table's URL.
-   
-   If you skip this step, the you will see the trigger button **in every table**.
+  
+   If you skip this step, you will see the trigger button **on every table**.
    
    ```javascript
    "content_scripts": [
@@ -34,24 +34,24 @@ This is a **proof-of-concept**, so it requires a few changes in code to adapt to
    ```
 
 3. Load this extension into your browser. Since this is an unpacked extension, it needs to be loaded in developer mode or debug mode.
+  
+   For **Google Chrome** or **Chromium-based**, follow the tutorial: https://developer.chrome.com/extensions/getstarted.
    
-   For **Google Chrome** or **Chromium-based**, follow the tutorial : https://developer.chrome.com/extensions/getstarted.
-   
-   For **Firefox**, follow the tutorial : https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension#Installing.
+   For **Firefox**, follow the tutorial: https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension#Installing.
 
-4. Open a table in Notion to test it out !
+4. Open a table in Notion to test it out!
 
 ## How it works
 
 ### Motivation
 
-In my case, I want to trigger Netlify's webhook to rebuild my static blog when I update posts on Notion with a single click. The webhook needs to be triggered by an empty `POST` request, but I couldn't find a block in Notion that can do a `POST` request. In addition, I use a full-page table to manage my posts, so there's actually no way to insert other type of blocks unless I change the framework's logic.
+In my case, I want to trigger Netlify's webhook to rebuild my static blog when I update posts on Notion with a single click. The webhook needs to be triggered by an empty `POST` request, but I couldn't find a block in Notion that can do a `POST` request. In addition, I use a full-page table to manage my posts, so there's actually no way to insert other type of blocks unless I change the [Notablog](https://github.com/dragonman225/notablog)'s logic.
 
 ### The Extension
 
 #### Prepare a trigger button
 
-By chance, I think of HTML `<form>`, where I can specify the HTTP method and in my case I just need to `POST` with an empty form. This is attractive to me because it even doesn't need AJAX, which means easier to implement !
+I think of HTML's `<form>`, where I can specify the HTTP method and in my case I just need to `POST` with an empty form. This is attractive to me because it doesn't need AJAX, which means easier to implement !
 
 So, I write the following
 
@@ -75,13 +75,13 @@ button.innerHTML = `\
 
 Create a `<div>`, inside the `<div>` we have a `<form>`, then we have a `<button>` in the `<form>`. The `<form>` has `action` attribute set to the `buildHookUrl`, which is the webhook URL, and `method` attribute set to `post`.
 
-This translates to : When we click the button, an empty form will be submit to the URL in `action` with `post` method. This is exactly what I want.
+This translates to: When we click the button, an empty form will be submit to the URL in `action` with `post` method. This is exactly what I want.
 
 ---
 
-Wait ! What's the `<iframe>` doing there?
+Wait! What's the `<iframe>` doing there?
 
-Actually, the script works without the `<iframe>`, but in that case after we click the button, we will be redirected to the webhook URL. This behavior is a bit annoying, so I find a way to prevent it here : https://stackoverflow.com/a/28060195.
+Actually, the script works without the `<iframe>`, but in that case after we click the button, we will be redirected to the webhook URL. This behavior is a bit annoying, so I find a way to prevent it, see https://stackoverflow.com/a/28060195.
 
 The `<iframe>` is not rendered, and the I set `target` attribute of `<form>` to the `<iframe>`'s `id`, so the redirect happens in the `<iframe>`, without effecting the main page.
 
