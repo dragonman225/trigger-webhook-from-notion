@@ -19,7 +19,7 @@ button.setAttribute('style', 'margin-left: 10px; display: inline-flex')
 button.innerHTML = `\
 <iframe width="0" height="0" border="0" name="dummyframe" id="dummyframe" style="display: none;"></iframe>
 <form action="${buildHookUrl}" method="post" target="dummyframe">
-  <button style="font-size: 14px; color: white; height: 24px; background: rgb(46, 170, 220); border: none; border-radius: 3px;">Trigger Site Update</button>
+  <button style="font-size: 14px; color: white; height: 1.8rem; line-height:2em; background: rgb(46, 170, 220); border: none; border-radius: 3px;">Trigger Site Update</button>
 </form>
 `
 
@@ -29,7 +29,7 @@ button.innerHTML = `\
  */
 const observer = new MutationObserver(function (mutations) {
   /** Try to hook up the button if not exist */
-  let toolbar = document.querySelector('div.notion-scroller:nth-child(2) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2)')
+  let toolbar = document.querySelector('div.notion-scroller.vertical.horizontal > div:nth-child(2) > div > div > div:nth-child(2)')
   let btn = document.getElementById(BUTTON_ID)
   /** btn doesn't exists && toolbar exists */
   if (!btn && toolbar) toolbar.appendChild(button)
